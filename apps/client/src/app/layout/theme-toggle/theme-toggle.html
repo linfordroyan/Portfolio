@@ -1,0 +1,10 @@
+<button
+  pButton
+  type="button"
+  [text]="true"
+  [rounded]="true"
+  [icon]="themeService.theme() === 'dark' ? 'pi pi-sun' : 'pi pi-moon'"
+  [attr.aria-label]="themeService.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+  [attr.aria-pressed]="themeService.theme() === 'dark'"
+  (click)="themeService.toggle()"
+></button>

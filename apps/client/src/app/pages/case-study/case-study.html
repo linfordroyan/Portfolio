@@ -1,0 +1,53 @@
+@if (study) {
+  <article class="mx-auto max-w-3xl px-4 py-12">
+    <a routerLink="/" fragment="projects" class="mb-6 inline-block text-sky-600 hover:underline dark:text-sky-400">
+      ← Back to projects
+    </a>
+
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ study.title }}</h1>
+    <p class="mt-2 text-gray-600 dark:text-gray-400">
+      {{ study.company }} · {{ study.role }}
+    </p>
+
+    <div class="mt-4 flex flex-wrap gap-2">
+      @for (tag of study.stack; track tag) {
+        <p-chip [label]="tag" />
+      }
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Problem</h2>
+      <p class="mt-2 text-gray-700 dark:text-gray-300">{{ study.problem }}</p>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Approach</h2>
+      <p class="mt-2 text-gray-700 dark:text-gray-300">{{ study.approach }}</p>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Outcomes</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-gray-700 dark:text-gray-300">
+        @for (outcome of study.outcomes; track outcome) {
+          <li>{{ outcome }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Key responsibilities</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-gray-700 dark:text-gray-300">
+        @for (item of study.responsibilities; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+    </section>
+
+    <div class="mt-12 rounded-lg bg-sky-50 p-6 text-center dark:bg-gray-900">
+      <p class="text-gray-700 dark:text-gray-300">Interested in similar work?</p>
+      <a [href]="mailto" class="mt-4 inline-block">
+        <p-button label="Get in touch" icon="pi pi-envelope" />
+      </a>
+    </div>
+  </article>
+}
