@@ -3,8 +3,8 @@ name: create-project-methodology
 description: >-
   Interactive wizard that asks project details and generates a filled
   development-methodology.md from development-methodology-template.md.
-  Also scaffolds docs/ folders and installs draft-first-workflow skill and
-  rule. Use when starting a new project, onboarding a repo, or when the user
+  Also scaffolds docs/ folders and installs draft-first-workflow and
+  branch-per-step-workflow skills and rules. Use when starting a new project, onboarding a repo, or when the user
   says "set up methodology", "create project docs", or "fill development
   methodology".
 disable-model-invocation: true
@@ -13,8 +13,8 @@ disable-model-invocation: true
 # Create Project Methodology Doc
 
 Generate a project-specific `development-methodology.md` from
-`development-methodology-template.md`, including **Draft-First Workflow**
-setup.
+`development-methodology-template.md`, including **Draft-First Workflow** and
+**Branch-Per-Step Workflow** setup.
 
 ## Before you start
 
@@ -91,6 +91,7 @@ Ask (AskQuestion):
 
 - Create `docs/prd/`, `docs/spec/`, `docs/adr/` with README stubs? **Yes / No**
 - Install `draft-first-workflow` rule + skill if missing? **Yes / No**
+- Install `branch-per-step-workflow` rule if missing? **Yes / No**
 
 ## Step 2 — Build the document
 
@@ -179,6 +180,34 @@ This project uses the **draft-first-workflow** skill and rule. The agent must:
 4. Wait for approval
 5. Then implement
 
+### Branch-Per-Step Workflow (always on)
+
+This project uses the **branch-per-step-workflow** rule. For every delivery step
+or feature slice:
+
+1. **Branch from `main`** — `git checkout main && git pull && git checkout -b <type>/<topic>`
+2. **Implement** — only that step's scope (after draft-first approval)
+3. **Commit** — at least one focused commit on the branch
+4. **Push + PR** — `git push -u origin <branch>`; open PR to `main`; never commit step work directly to `main`
+
+Branch prefixes: `docs/`, `feat/`, `chore/`, `ci/`, `fix/`
+
+### Files
+
+| File | Purpose |
+|------|---------|
+| `.cursor/rules/branch-per-step-workflow.mdc` | Always-on git workflow rule |
+
+### Git workflow per delivery step
+
+| Step | Branch example |
+|------|----------------|
+| PRD | `docs/prd` |
+| Tech spec | `docs/spec` |
+| App scaffold | `feat/angular-scaffold` |
+| Feature slice | `feat/<slice-name>` |
+| CI / deploy | `ci/github-pages` |
+
 ---
 ```
 
@@ -208,8 +237,9 @@ After approval:
 
    - `.cursor/rules/draft-first-workflow.mdc`
    - `.cursor/skills/draft-first-workflow/SKILL.md`
+   - `.cursor/rules/branch-per-step-workflow.mdc`
 
-   Copy content from the template kit's `.cursor/` folder if present in the project; otherwise use the standard draft-first content from this skill's sibling skill.
+   Copy content from the template kit's `.cursor/` folder if present in the project; otherwise use the standard draft-first content from this skill's sibling skill, and branch-per-step content from `.cursor/rules/branch-per-step-workflow.mdc` in a project that already has it.
 
 ## Step 5 — Confirm
 
@@ -217,10 +247,12 @@ Tell the user:
 
 - Output file path
 - What was scaffolded
-- Next step: PRD phase (`docs/prd/` + section 8 worksheet)
+- Next step: PRD phase (`docs/prd/` + section 8 worksheet) on branch `docs/prd`
 
 ## Anti-patterns
 
 - Do not skip the preview/approval step (violates draft-first).
+- Do not implement multiple delivery steps on one branch (violates branch-per-step).
+- Do not commit step work directly to `main` unless the user explicitly asks.
 - Do not invent stack choices — use defaults only when the user accepts them.
 - Do not truncate template sections 2–10.
