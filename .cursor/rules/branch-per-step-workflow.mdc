@@ -1,0 +1,63 @@
+---
+description: One delivery step per branch — branch from main, implement, commit, push, open PR
+alwaysApply: true
+---
+
+# Branch-Per-Step Workflow
+
+Every **delivery step** or **feature slice** gets its own git branch and commit(s). Do not implement multiple steps on one branch or commit directly to `main`.
+
+## When this applies
+
+- Each item in the delivery order (`docs/development-methodology.md`)
+- Each vertical feature slice (PRD → spec → implement → tests)
+- Each distinct user request that maps to a single planned step
+
+## Workflow (per step)
+
+1. **Confirm step** — state which step/slice is in scope (align with delivery order).
+2. **Branch from `main`** — pull latest, then create a descriptive branch:
+
+   ```text
+   docs/<topic>           # documentation only
+   feat/<topic>           # features / app code
+   chore/<topic>          # tooling, config, rules
+   ci/<topic>             # GitHub Actions, deploy
+   fix/<topic>            # bug fixes
+   ```
+
+3. **Implement** — only what that step requires (after draft-first approval).
+4. **Commit** — at least one commit for the step; message explains **why**, not just what:
+
+   ```text
+   feat(home): add hero and contact sections for MVP slice 5
+   ```
+
+5. **Push** — `git push -u origin <branch>`
+6. **Open PR to `main`** — one PR per branch; user merges. Do not force-push `main`.
+
+## Rules
+
+- **Never** commit step work directly to `main` unless the user explicitly asks.
+- **One step per branch** — if scope grows, split into a new branch/PR.
+- **Sync before branch** — `git checkout main && git pull` before `git checkout -b`.
+- **Clean commits** — no unrelated files (no `node_modules`, `.angular`, secrets).
+- After user merges, **pull `main`** before starting the next step.
+
+## Example
+
+Step 5 (Hero · About · Contact):
+
+```bash
+git checkout main && git pull
+git checkout -b feat/home-hero-about-contact
+# ... implement ...
+git add <relevant files>
+git commit -m "feat(home): add hero, about, and contact sections"
+git push -u origin feat/home-hero-about-contact
+# open PR to main
+```
+
+## With draft-first
+
+Draft → approval → **then** branch → implement → commit → push → PR. Do not branch for read-only investigation.
