@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -22,6 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -35,9 +39,15 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build -- --configuration production
+        run: npm run build:prod
         env:
           GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
+
+      - name: Prepare GitHub Pages artifact
+        run: |
+          test -f dist/client/browser/index.html
+          cp dist/client/browser/index.html dist/client/browser/404.html
+        working-directory: apps/client
 
       - uses: actions/upload-pages-artifact@v3
         with:
