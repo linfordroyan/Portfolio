@@ -8,9 +8,17 @@
 .angular/
 
 # Node modules and dependency files
-/node_modules/
-/package-lock.json
-/yarn.lock
+node_modules/
+**/node_modules/
+.npm-cache/
+
+# Build output
+apps/client/dist/
+apps/client/.angular/
+
+# Python cache (ui-ux-pro-max skill scripts)
+**/__pycache__/
+*.pyc
 
 # Environment files
 /.env
