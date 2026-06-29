@@ -1,0 +1,173 @@
+<section id="hero" class="bg-gradient-to-b from-sky-50 to-white py-20 dark:from-gray-900 dark:to-gray-950">
+  <div class="mx-auto max-w-5xl px-4 text-center">
+    <h1 class="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl dark:text-gray-100">
+      {{ profile.name }}
+    </h1>
+    <p class="mt-3 text-xl text-sky-700 dark:text-sky-400">{{ profile.title }}</p>
+    <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">{{ profile.tagline }}</p>
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ profile.subline }}</p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a [href]="mailto" (click)="trackMailto('hero')">
+        <p-button label="Get in touch" icon="pi pi-envelope" />
+      </a>
+      <a [href]="profile.resumePath" download (click)="trackResume()">
+        <p-button label="Download resume" icon="pi pi-download" severity="secondary" />
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="py-16">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">About</h2>
+    <p class="text-gray-700 dark:text-gray-300">{{ profile.summary }}</p>
+    <ul class="mt-6 list-disc space-y-2 pl-5 text-gray-700 dark:text-gray-300">
+      @for (item of profile.highlights; track item) {
+        <li>{{ item }}</li>
+      }
+    </ul>
+  </div>
+</section>
+
+<section id="services" class="bg-gray-50 py-16 dark:bg-gray-900/50">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="mb-8 text-3xl font-bold text-gray-900 dark:text-gray-100">Services</h2>
+    <div class="grid gap-4 md:grid-cols-2">
+      @for (service of services; track service.id) {
+        <p-card>
+          <ng-template #title>{{ service.title }}</ng-template>
+          <p class="text-gray-700 dark:text-gray-300">{{ service.description }}</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            @for (kw of service.keywords; track kw) {
+              <p-chip [label]="kw" />
+            }
+          </div>
+        </p-card>
+      }
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="py-16">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="mb-8 text-3xl font-bold text-gray-900 dark:text-gray-100">Skills</h2>
+    @for (group of skillGroups; track group.id) {
+      <div class="mb-6">
+        <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">{{ group.name }}</h3>
+        <div class="flex flex-wrap gap-2">
+          @for (skill of group.skills; track skill) {
+            <p-chip [label]="skill" />
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>
+
+<section id="experience" class="bg-gray-50 py-16 dark:bg-gray-900/50">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="mb-8 text-3xl font-bold text-gray-900 dark:text-gray-100">Experience</h2>
+    <div class="space-y-6">
+      @for (job of experience; track job.id) {
+        <p-card>
+          <ng-template #title>{{ job.role }}</ng-template>
+          <ng-template #subtitle>
+            {{ job.company }} · {{ job.startDate }} –
+            {{ job.endDate ?? 'Present' }}
+          </ng-template>
+          <ul class="list-disc space-y-1 pl-5 text-gray-700 dark:text-gray-300">
+            @for (h of job.highlights; track h) {
+              <li>{{ h }}</li>
+            }
+          </ul>
+        </p-card>
+      }
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="py-16">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="mb-8 text-3xl font-bold text-gray-900 dark:text-gray-100">Projects</h2>
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      @for (project of projects; track project.slug) {
+        <p-card>
+          <ng-template #title>{{ project.title }}</ng-template>
+          <ng-template #subtitle>{{ project.company }}</ng-template>
+          <p class="text-sm text-gray-700 dark:text-gray-300">{{ project.oneLiner }}</p>
+          @if (project.featured) {
+            <a [routerLink]="['/projects', project.slug]" class="mt-4 inline-block">
+              <p-button label="View case study" [text]="true" icon="pi pi-arrow-right" iconPos="right" />
+            </a>
+          }
+        </p-card>
+      }
+    </div>
+  </div>
+</section>
+
+<section id="certifications" class="bg-gray-50 py-16 dark:bg-gray-900/50">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">Certifications</h2>
+    <ul class="list-disc space-y-2 pl-5 text-gray-700 dark:text-gray-300">
+      @for (cert of certifications; track cert.id) {
+        <li>{{ cert.name }}@if (cert.date) { ({{ cert.date }}) }</li>
+      }
+    </ul>
+  </div>
+</section>
+
+<section id="education" class="py-16">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">Education</h2>
+    @for (edu of education; track edu.degree) {
+      <p class="text-gray-700 dark:text-gray-300">
+        <strong>{{ edu.degree }}</strong> — {{ edu.institution }} ({{ edu.year }})
+      </p>
+    }
+  </div>
+</section>
+
+<section id="testimonials" class="bg-gray-50 py-16 dark:bg-gray-900/50">
+  <div class="mx-auto max-w-5xl px-4">
+    <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">Testimonials</h2>
+    @if (testimonials.length === 0) {
+      <p class="text-gray-600 italic dark:text-gray-400">
+        Client testimonials will appear here as projects complete.
+      </p>
+    }
+  </div>
+</section>
+
+<section id="contact" class="py-16">
+  <div class="mx-auto max-w-5xl px-4 text-center">
+    <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">Let's work together</h2>
+    <p class="text-gray-600 dark:text-gray-300">Have a project in mind? I'd love to hear about it.</p>
+    <p class="mt-2 text-gray-700 dark:text-gray-300">{{ profile.responseTimeCopy }}</p>
+    <div class="mt-6 space-y-2 text-gray-700 dark:text-gray-300">
+      <p>
+        <a
+          class="text-sky-600 hover:underline dark:text-sky-400"
+          [href]="mailto"
+          (click)="trackMailto('contact')"
+        >
+          {{ profile.email }}
+        </a>
+      </p>
+      <p>
+        <a class="text-sky-600 hover:underline dark:text-sky-400" [href]="'tel:' + profile.phoneTel">
+          {{ profile.phone }}
+        </a>
+      </p>
+      <p>{{ profile.location }}</p>
+    </div>
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      <a [href]="mailto" (click)="trackMailto('contact')">
+        <p-button label="Email me" icon="pi pi-envelope" />
+      </a>
+      <a [href]="profile.resumePath" download (click)="trackResume()">
+        <p-button label="Download resume" severity="secondary" icon="pi pi-download" />
+      </a>
+    </div>
+  </div>
+</section>

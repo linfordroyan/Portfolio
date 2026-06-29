@@ -1,0 +1,27 @@
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<app-header />
+
+<main id="main-content">
+  <router-outlet />
+</main>
+
+<app-footer />
+
+@if (consent() === null) {
+  <div
+    class="fixed bottom-0 inset-x-0 z-50 border-t border-gray-200 bg-white p-4 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+    role="dialog"
+    aria-label="Cookie consent"
+  >
+    <div class="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-sm text-gray-700 dark:text-gray-300">
+        We use cookies for analytics to improve this site. No personal data is sold.
+      </p>
+      <div class="flex gap-2">
+        <p-button label="Decline" severity="secondary" (onClick)="declineAnalytics()" />
+        <p-button label="Accept" (onClick)="acceptAnalytics()" />
+      </div>
+    </div>
+  </div>
+}
